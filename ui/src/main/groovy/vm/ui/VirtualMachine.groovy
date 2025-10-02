@@ -22,6 +22,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import vm.theme.FlatMetalTheme;
 import javax.swing.UIManager;
@@ -35,9 +36,8 @@ public class VirtualMachine extends JFrame {
 	private static JMenuBar menuBar =  new JMenuBar();
 	private double menuBarPaddingPercent = 0.20;
 
-	private List<JMenu> leftSideMenus;
-	private List<JMenu> rightSideMenus;
-
+	private ConcurrentLinkedQueue<JMenu> leftSideMenus = new ConcurrentLinkedQueue<>();
+	private ConcurrentLinkedQueue<JMenu> rightSideMenus = new ConcurrentLinkedQueue<>();
     private VMDesktop desktop;
 
     private VirtualMachine() {
@@ -58,8 +58,6 @@ public class VirtualMachine extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(800, 600);
 
-		leftSideMenus = new ArrayList<>();
-		rightSideMenus = new ArrayList<>();
 
 		// Custom desktop pane with retro background
 		desktop = new VMDesktop(this);
@@ -115,33 +113,54 @@ public class VirtualMachine extends JFrame {
 		add(menuWrapper, BorderLayout.NORTH);
     }
 
-    public JMenuBar geVMMenuBar() {
-        return menuBar;
+
+
+    public JMenu findMenuByText(String text) {
+		for (JMenu menu: leftSideMenus) {
+			if (text.equals(menu.getText())) {
+				return menu;
+			}
+		}
+
+		for (JMenu menu: rightSideMenus) {
+			if (text.equals(menu.getText())) {
+				return menu;
+			}
+		}
+		
+        return null;
     }
+
+	public JMenuBar getAppMenuBar() {
+		return menuBar;
+	}
 
     public VMDesktop getDesktop() {
         return desktop;
     }
 
-	public void addSysLeftMenu(JMenu menu) {
+	public synchronized void addSysLeftMenu(JMenu menu) {
 		addMenu(menu, leftSideMenus);
 	}
 
-	public void addSysRightMenu(JMenu menu) {
+	public synchronized void addSysRightMenu(JMenu menu) {
 		addMenu(menu, rightSideMenus);
 	}
 
-    private void refreshMenubar() {
-        
+    void refreshMenubar() {
 		menuBar.removeAll();
 		leftSideMenus.forEach { menu -> menuBar.add(menu) };
 		menuBar.add(Box.createHorizontalGlue());
 		rightSideMenus.forEach { menu -> menuBar.add(menu) };
 		menuBar.revalidate();
 		menuBar.repaint();
+
+
+		dispatchEvent(new java.awt.event.ComponentEvent(
+						this, java.awt.event.ComponentEvent.COMPONENT_RESIZED));
 	}
 
-    private void addMenu(JMenu menu, List<JMenu> sink) {
+    private void addMenu(JMenu menu, ConcurrentLinkedQueue<JMenu> sink) {
 		sink.add(menu);
 		menuBar.add(menu);
 	}
