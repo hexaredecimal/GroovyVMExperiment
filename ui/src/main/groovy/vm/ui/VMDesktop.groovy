@@ -132,6 +132,7 @@ public class VMDesktop extends JDesktopPane {
 		try {
 			img = ImageIO.read(new File(path));
 			this.image = makeRetroCopy(img, dithering);
+			repaint();
 		} catch (IOException _) {
 			System.out.println("Image not found");
 		}
