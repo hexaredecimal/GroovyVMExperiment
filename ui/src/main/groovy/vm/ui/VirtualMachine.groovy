@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JComponent;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import javax.swing.SwingUtilities;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -26,12 +27,13 @@ import vm.theme.FlatMetalTheme;
 import javax.swing.UIManager;
 import javax.swing.JFrame;
 import javax.swing.Box;
+import vm.ui.VirtualMachine
 
 public class VirtualMachine extends JFrame {
     private static VirtualMachine vmInstance = null;
     private JPanel menuWrapper;
 	private static JMenuBar menuBar =  new JMenuBar();
-	private double menuBarPaddingPercent = 0.30;
+	private double menuBarPaddingPercent = 0.20;
 
 	private List<JMenu> leftSideMenus;
 	private List<JMenu> rightSideMenus;
@@ -61,6 +63,9 @@ public class VirtualMachine extends JFrame {
 
 		// Custom desktop pane with retro background
 		desktop = new VMDesktop(this);
+        desktop.setLeftMouseClickCallBack { event -> 
+			this.useSystemMenus();
+        }
 
 		setContentPane(desktop);
 		desktop.setBackground(Color.WHITE); // or whatever you like
@@ -108,6 +113,10 @@ public class VirtualMachine extends JFrame {
 
 		// add wrapper at top
 		add(menuWrapper, BorderLayout.NORTH);
+    }
+
+    public JMenuBar geVMMenuBar() {
+        return menuBar;
     }
 
     public VMDesktop getDesktop() {
