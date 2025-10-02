@@ -11,12 +11,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
+import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
+import javax.swing.JMenu;
+
 
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
@@ -24,31 +27,46 @@ import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
 
 import vm.ui.VMWindow;
+import vm.ui.VMDesktop
 
 
 public class VMDesktop extends JDesktopPane {
 	private BufferedImage image;
 	private JPopupMenu popupMenu;
 	private VirtualMachine vm; 
+	private Closure leftClick = null;
+	private Closure rightClick = null;
 
 	public VMDesktop(VirtualMachine vm) {
 		this.image = null;
 		this.vm = vm;
 
-		JDesktopPane desktop = this;
+		VMDesktop desktop = this;
 
 		addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-				if (SwingUtilities.isLeftMouseButton(e)) {
-					vm.useSystemMenus();
+				if (SwingUtilities.isLeftMouseButton(e) && desktop.leftClick != null) {
+					desktop.leftClick(e);
+					return;
+                }
+
+				if (SwingUtilities.isRightMouseButton(e) && desktop.rightClick != null) {
+					desktop.rightClick(e);
+					return;
                 }
             }
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				if (SwingUtilities.isLeftMouseButton(e)) {
-					vm.useSystemMenus();
+				if (SwingUtilities.isLeftMouseButton(e) && desktop.leftClick != null) {
+					desktop.leftClick(e);
+					return;
+                }
+
+				if (SwingUtilities.isRightMouseButton(e) && desktop.rightClick != null) {
+					desktop.rightClick(e);
+					return;
                 }
 			}
 
@@ -62,7 +80,9 @@ public class VMDesktop extends JDesktopPane {
                     f.addInternalFrameListener(new InternalFrameListener() {
                         @Override
                         public void internalFrameActivated(InternalFrameEvent ev) {
-							vm.useMenus(f.getMenus());
+							List<JMenu> menus = f.getMenus();
+							if (!menus.isEmpty())
+								vm.useMenus(menus);
                         }
 
                         @Override
@@ -72,7 +92,12 @@ public class VMDesktop extends JDesktopPane {
                             }
                         }
 
-                        public void internalFrameOpened(InternalFrameEvent ev) {}
+                        public void internalFrameOpened(InternalFrameEvent ev) {
+							List<JMenu> menus = f.getMenus();
+							if (!menus.isEmpty())
+								vm.useMenus(menus);
+						}
+
                         public void internalFrameClosing(InternalFrameEvent ev) {}
                         
 						@Override
@@ -87,6 +112,14 @@ public class VMDesktop extends JDesktopPane {
 				}
 			}
 		});
+	}
+
+	public void setLeftMouseClickCallBack(Closure closure) {
+		leftClick = closure;
+	}
+
+	public void setRightMouseClickCallBack(Closure closure) {
+		rightClick = closure;
 	}
 
 
