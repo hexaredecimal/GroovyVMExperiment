@@ -10,7 +10,22 @@ import javax.swing.JComponent;
 import java.awt.Component;
 import javax.swing.SwingUtilities;
 
+import java.util.HashMap;
+
 public class Utils {
+    private static HashMap<String, JMenu> categories = new HashMap<>();
+
+    public static JMenu getCategoryMenu(String category) {
+        if (categories.containsKey(category)) {
+            return categories.get(category);
+        }
+
+        JMenu menu = new JMenu(category);
+        categories.put(category, menu);
+        return menu;
+    }
+
+
     public static void addRightClickMenu(JComponent parent, JPopupMenu menu) {
 		parent.addMouseListener(new MouseAdapter() {
 			@Override
