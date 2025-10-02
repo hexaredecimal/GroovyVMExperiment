@@ -8,6 +8,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JComponent;
 import java.awt.Component;
+import javax.swing.SwingUtilities;
 
 public class Utils {
     public static void addRightClickMenu(JComponent parent, JPopupMenu menu) {
@@ -29,6 +30,28 @@ public class Utils {
 			}
 		});
 	}
+
+    public static void addClickEvent(JComponent parent, Closure closure) {
+		parent.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+                if (!SwingUtilities.isLeftMouseButton(e)) {
+					return;
+                }
+
+                closure(e);
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+                if (!SwingUtilities.isLeftMouseButton(e)) {
+					return;
+                }
+                closure(e);
+			}
+		});
+	}
+
 
     public static Component findMenuItemByText(Component root, String text) {
         if (root instanceof JMenu) {
