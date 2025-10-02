@@ -5,45 +5,71 @@ import java.lang.System;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.Timer;
 
 import vm.ui.VirtualMachine;
 import vm.ui.VMWindow;
 import vm.ui.VMDesktop
 
+import java.io.File;
+
 
 public class Main {
     public static void main(args) {
         VirtualMachine vm = VirtualMachine.getInstance();
         setUpMenuBar(vm);
+        loadScripts("../vm/startup");
+
 
         VMDesktop desktop = vm.getDesktop();
         desktop.setWallpaper("/home/hexaredecimal/Wallpapers/wp2853583.jpg")
 
-        for (int i =0; i < 3; i++) {
-            VMWindow window = new VMWindow("Hello: " + i);
-            desktop.add(window);
+        vm.run();
+    }
 
-            JMenu fileMenu = new JMenu("File: " + i);
-            window.add(fileMenu);
+    private static void loadScripts(String path) {
+        File dir = new File(path);
 
-
-            window.setSize(100, 100);
-            window.setVisible(true);
+        if (!dir.exists() || !dir.isDirectory()) {
+            return;
         }
 
-        vm.run();
+        File[] groovyFiles = dir.listFiles((d, name) -> name.endsWith(".groovy"));
+
+        if (groovyFiles == null || groovyFiles.length == 0) {
+            return;
+        }
+
+        for (File file : groovyFiles) {
+            String scriptPath = file.getAbsolutePath();
+            ScriptLoader.executeScript(scriptPath);
+        }
     }
 
     private static void setUpMenuBar(VirtualMachine vm) {
         JMenu appsMenu = new JMenu("Applications");
         vm.addSysLeftMenu(appsMenu);
-        
+
+        JMenu workSpacesMenu = new JMenu("WorkSpaces");
+        vm.addSysLeftMenu(workSpacesMenu);
+
+        JMenu addOnsMenu = new JMenu("AddOns");
+        vm.addSysLeftMenu(addOnsMenu);
+
+
         setUpDefaultMenus(vm);
     }
 
 
     private static void setUpDefaultMenus(VirtualMachine vm) {
+        JMenu saveVMMenu = new JMenu("Save VM");
+        vm.addSysRightMenu(saveVMMenu);
+        
+        JMenu reloadVMMenu = new JMenu("Reload");
+        vm.addSysRightMenu(reloadVMMenu);
+
+
         JMenu clockMenu = new JMenu("Clock");
         String time = new SimpleDateFormat("HH:mm:ss").format(new Date());
         clockMenu.setText(time);
