@@ -21,6 +21,7 @@ import javax.imageio.ImageIO;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.metal.MetalLookAndFeel;
+import javax.swing.ImageIcon;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -57,6 +58,9 @@ public class VirtualMachine extends JFrame {
 		setLookAndFeel();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(800, 600);
+
+		ImageIcon frameIcon = new ImageIcon("../vm/share/assets/logo.png");
+		setIconImage(frameIcon.getImage());
 
 
 		desktop = new VMDesktop(this);
