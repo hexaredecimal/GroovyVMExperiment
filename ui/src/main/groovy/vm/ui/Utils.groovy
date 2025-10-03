@@ -68,31 +68,4 @@ public class Utils {
 	}
 
 
-    public static Component findMenuItemByText(Component root, String text) {
-        if (root instanceof JMenu) {
-            JMenu menu = (JMenu) root;
-            if (text.equals(menu.getText())) {
-                return menu;
-            }
-            for (int i = 0; i < menu.getMenuComponentCount(); i++) {
-                Component found = findMenuItemByText(menu.getMenuComponent(i), text);
-                if (found != null) {
-                    return found;
-                }
-            }
-        } else if (root instanceof JMenuItem) {
-            JMenuItem menuItem = (JMenuItem) root;
-            if (text.equals(menuItem.getText())) {
-                return menuItem;
-            }
-        } else if (root instanceof JComponent) {
-            for (Component child : ((JComponent) root).getComponents()) {
-                Component found = findMenuItemByText(child, text);
-                if (found != null) {
-                    return found;
-                }
-            }
-        }
-        return null;
-    }
 }
