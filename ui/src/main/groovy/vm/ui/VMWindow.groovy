@@ -31,6 +31,14 @@ public class VMWindow extends JInternalFrame {
         int x = rand.nextInt(Math.max(1, dSize.width / 2 + dSize.width / 4) as Integer);
         int y = rand.nextInt(Math.max(1, dSize.height / 2 + dSize.height / 4) as Integer);
         setLocation(x, y);
+
+        toFront();
+
+        try {
+            setSelected(true);
+        }   catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public List<JMenu> getMenus() {
