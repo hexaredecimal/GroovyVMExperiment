@@ -43,7 +43,7 @@ public class ScriptLoader {
         Arrays.sort(groovyFiles, (f1, f2) -> f1.getName().compareToIgnoreCase(f2.getName()));
         for (File file : groovyFiles) {
             String scriptPath = file.getAbsolutePath();
-            System.out.println("RUNNING: " + scriptPath + "\n\n");
+            System.out.println("RUNNING: " + scriptPath);
             executeScript(scriptPath);
         }
     }
