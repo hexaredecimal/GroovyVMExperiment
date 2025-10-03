@@ -7,12 +7,17 @@ import vm.ui.Utils;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JMenuBar
+import javax.swing.JMenuBar;
+import javax.swing.ImageIcon;
 
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.Timer;
+
+import java.awt.Image;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public class VMAppMenu {
     public static void init() {
@@ -22,14 +27,29 @@ public class VMAppMenu {
 
         menuBar.removeAll();
 
-        JMenu appsMenu = new JMenu("Applications");
+        JMenu sysMenu = new JMenu();
+        ImageIcon sysIcon = new ImageIcon("../vm/share/assets/icons/test-tube-16.png");
+        sysMenu.setIcon(sysIcon);
+        Utils.putCategoryMenu("VMSystemMenu", sysMenu);
+        vm.addSysLeftMenu(sysMenu);
+
+
+        JMenu projectsMenu = new JMenu("Projects");
+        vm.addSysLeftMenu(projectsMenu);
+        
+        JMenu toolsMenu = new JMenu("Tools");
+        vm.addSysLeftMenu(toolsMenu);
+
+        JMenu appsMenu = new JMenu("Apps");
         vm.addSysLeftMenu(appsMenu);
 
-        JMenu workSpacesMenu = new JMenu("WorkSpaces");
-        vm.addSysLeftMenu(workSpacesMenu);
+        JMenu doMenu = new JMenu("Do");
+        vm.addSysLeftMenu(doMenu);
 
-        JMenu addOnsMenu = new JMenu("AddOns");
-        vm.addSysLeftMenu(addOnsMenu);
+        JMenu windowMenu = new JMenu("Window");
+        vm.addSysLeftMenu(windowMenu);
+
+
 
 
 
