@@ -72,46 +72,6 @@ public class VMDesktop extends JDesktopPane {
 
         });
 
-		addContainerListener(new ContainerAdapter() {
-            @Override
-            public void componentAdded(ContainerEvent e) {
-                if (e.getChild() instanceof VMWindow) {
-                    VMWindow f = e.getChild() as VMWindow;
-                    f.addInternalFrameListener(new InternalFrameListener() {
-                        @Override
-                        public void internalFrameActivated(InternalFrameEvent ev) {
-							List<JMenu> menus = f.getMenus();
-							if (!menus.isEmpty())
-								vm.useMenus(menus);
-                        }
-
-                        @Override
-                        public void internalFrameDeactivated(InternalFrameEvent ev) {
-                            if (desktop.getSelectedFrame() == null) {
-								vm.useSystemMenus();
-                            }
-                        }
-
-                        public void internalFrameOpened(InternalFrameEvent ev) {
-							List<JMenu> menus = f.getMenus();
-							if (!menus.isEmpty())
-								vm.useMenus(menus);
-						}
-
-                        public void internalFrameClosing(InternalFrameEvent ev) {}
-                        
-						@Override
-                        public void internalFrameClosed(InternalFrameEvent ev) {
-                            if (desktop.getSelectedFrame() == null) {
-								vm.useSystemMenus();
-                            }
-						}
-                        public void internalFrameIconified(InternalFrameEvent ev) {}
-                        public void internalFrameDeiconified(InternalFrameEvent ev) {}
-                    });
-				}
-			}
-		});
 	}
 
 	public void setLeftMouseClickCallBack(Closure closure) {
