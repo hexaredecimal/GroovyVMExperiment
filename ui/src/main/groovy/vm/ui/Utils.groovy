@@ -14,6 +14,7 @@ import java.util.HashMap;
 
 public class Utils {
     private static HashMap<String, JMenu> categories = new HashMap<>();
+    private static HashMap<String, JPopupMenu> popUps = new HashMap<>();
 
     public static JMenu getCategoryMenu(String category) {
         if (categories.containsKey(category)) {
@@ -23,6 +24,18 @@ public class Utils {
         JMenu menu = new JMenu(category);
         categories.put(category, menu);
         return menu;
+    }
+
+    public static void putCategoryMenu(String category, JMenu menu) {
+        categories.put(category, menu);
+    }
+
+    public static void putPopUpMenu(String category, JPopupMenu menu) {
+        categories.put(category, menu);
+    }
+
+    public static JPopupMenu getPopUpMenu(String category) {
+        return categories.get(category);
     }
 
 
