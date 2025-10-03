@@ -29,7 +29,7 @@ import vm.theme.FlatMetalTheme;
 import javax.swing.UIManager;
 import javax.swing.JFrame;
 import javax.swing.Box;
-import vm.ui.VirtualMachine
+import vm.ui.Utils;
 
 public class VirtualMachine extends JFrame {
     private static VirtualMachine vmInstance = null;
@@ -169,6 +169,8 @@ public class VirtualMachine extends JFrame {
 
     public void useMenus(List<JMenu> menus) {
 		menuBar.removeAll();
+		JMenu systemMenu = Utils.getCategoryMenu("VMSystemMenu");
+		menuBar.add(systemMenu);
         menus.forEach { menu -> menuBar.add(menu); }
 		menuBar.add(Box.createHorizontalGlue());
 		rightSideMenus.forEach { menu -> menuBar.add(menu) };
