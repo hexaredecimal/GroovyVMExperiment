@@ -15,21 +15,16 @@ import javax.swing.JPopupMenu;
 VirtualMachine vm = VirtualMachine.getInstance();
 VMDesktop desktop = vm.getDesktop();
 
-JMenu item = vm.findMenuByText("Applications");
-JMenu examples = Utils.getCategoryMenu("Examples");
-item.add(examples);
+JMenu appsMenu = vm.findMenuByText("Apps");
 
 JPopupMenu contextMenu = new JPopupMenu();
-
-
-JMenuItem refresh = new JMenuItem("Refresh");
-contextMenu.add(refresh);
-
+Utils.putPopUpMenu("DesktopPopUpMenu", contextMenu);
 
 desktop.setRightMouseClickCallBack { event -> 
 	if (event.isPopupTrigger()) {
 		contextMenu.show(desktop, event.getX(), event.getY());
 	}
 }
+
 
 
