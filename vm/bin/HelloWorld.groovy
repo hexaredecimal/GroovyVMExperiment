@@ -33,12 +33,11 @@ class HelloWorldApp {
 VirtualMachine vm = VirtualMachine.getInstance();
 VMDesktop desktop = vm.getDesktop();
 
-JMenu item = vm.findMenuByText("Applications");
-JMenu examples = Utils.getCategoryMenu("Examples");
+JMenu apps = vm.findMenuByText("Apps");
 
 JMenuItem app = new JMenuItem("HelloWorld");
 app.addActionListener {event -> 
     desktop.add(HelloWorldApp.run());
 }
 
-examples.add(app);
+apps.add(app);
