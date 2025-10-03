@@ -59,14 +59,13 @@ public class VirtualMachine extends JFrame {
 		setSize(800, 600);
 
 
-		// Custom desktop pane with retro background
 		desktop = new VMDesktop(this);
         desktop.setLeftMouseClickCallBack { event -> 
 			this.useSystemMenus();
         }
 
 		setContentPane(desktop);
-		desktop.setBackground(Color.WHITE); // or whatever you like
+		desktop.setBackground(Color.WHITE);
 
 		menuBar.setBorder(new LineBorder(Color.DARK_GRAY, 1));
 
@@ -109,7 +108,6 @@ public class VirtualMachine extends JFrame {
 			}
 		});
 
-		// add wrapper at top
 		add(menuWrapper, BorderLayout.NORTH);
     }
 
@@ -193,7 +191,6 @@ public class VirtualMachine extends JFrame {
 			MetalLookAndFeel.setCurrentTheme(new FlatMetalTheme());
 			UIManager.setLookAndFeel(new MetalLookAndFeel());
 
-			// Force global font size 12
 			FontUIResource font = new FontUIResource("Dialog", Font.PLAIN, 12);
 			for (Object key : UIManager.getDefaults().keySet()) {
 				if (UIManager.get(key) instanceof FontUIResource) {

@@ -14,11 +14,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.Timer;
 
-public class AppMenu {
+public class VMAppMenu {
     public static void init() {
         VirtualMachine vm = VirtualMachine.getInstance();
-
-        System.out.println(vm)
 
         JMenuBar menuBar = vm.getAppMenuBar();
 
@@ -72,5 +70,5 @@ public class AppMenu {
     }
 }
 
-AppMenu.init();
+VMAppMenu.init();
 

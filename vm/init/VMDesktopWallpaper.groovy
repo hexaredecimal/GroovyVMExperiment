@@ -3,14 +3,14 @@ import vm.ui.VirtualMachine;
 import vm.ui.VMDesktop;
 
 
-public class DesktopWallPaper {
+public class VMDesktopWallPaper {
     public static void init() {
         VirtualMachine vm = VirtualMachine.getInstance();
 
         VMDesktop desktop = vm.getDesktop();
-        desktop.setWallpaper("/home/hexaredecimal/Wallpapers/wp2853583.jpg");
+        desktop.setWallpaper("../vm/share/assets/logo_bgwhite.png", 0);
     }
 }
 
-DesktopWallPaper.init()
+VMDesktopWallPaper.init()
 

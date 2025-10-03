@@ -10,7 +10,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JMenuBar
 
 
-public class AppCategories {
+public class VMAppCategories {
     public static void init() {
         VirtualMachine vm = VirtualMachine.getInstance();
         VMDesktop desktop = vm.getDesktop();
@@ -21,5 +21,5 @@ public class AppCategories {
     }
 }
 
-AppCategories.init();
+VMAppCategories.init();
 
