@@ -72,6 +72,7 @@ public class VirtualMachine extends JFrame {
 		desktop.setBackground(Color.WHITE);
 
 		menuBar.setBorder(new LineBorder(Color.DARK_GRAY, 1));
+		menuBar.setBackground(Color.WHITE);
 
 		menuWrapper = new JPanel(null) {
 			@Override
