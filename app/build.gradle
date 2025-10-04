@@ -8,8 +8,14 @@ plugins {
 
 dependencies {
     implementation 'org.apache.commons:commons-text'
+    implementation 'org.eclipse.jgit:org.eclipse.jgit:6.4.0.202211300538-r'
+    implementation 'org.eclipse.jgit:org.eclipse.jgit.ssh.apache:6.4.0.202211300538-r'
+    implementation 'org.eclipse.jgit:org.eclipse.jgit.gpg.bc:6.4.0.202211300538-r'
+    implementation 'com.fifesoft:rsyntaxtextarea:3.6.0'
     implementation project(':ui')
 }
+
+
 
 application {
     // Define the main class for the application.
