@@ -72,6 +72,18 @@ public class VMDesktop extends JDesktopPane {
 
         });
 
+
+		addContainerListener(new ContainerAdapter() {
+            @Override
+            public void componentAdded(ContainerEvent e) {
+                if (e.getChild() instanceof VMWindow) {
+                    VMWindow f = e.getChild() as VMWindow;
+		    f.toFront();
+		    f.setSelected(true);
+                }
+	     }
+	  });
+
 	}
 
 	public void setLeftMouseClickCallBack(Closure closure) {
