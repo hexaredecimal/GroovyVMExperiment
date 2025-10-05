@@ -4,6 +4,7 @@ import javax.swing.JPanel;
 import javax.swing.JComponent;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 
 import java.awt.BorderLayout;
@@ -23,6 +24,7 @@ import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.ImageIcon;
 
+
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import vm.theme.FlatMetalTheme;
@@ -37,13 +39,29 @@ public class VirtualMachine extends JFrame {
 	private static JMenuBar menuBar =  new JMenuBar();
 	private double menuBarPaddingPercent = 0.20;
 
-	private ConcurrentLinkedQueue<JMenu> leftSideMenus = new ConcurrentLinkedQueue<>();
-	private ConcurrentLinkedQueue<JMenu> rightSideMenus = new ConcurrentLinkedQueue<>();
+	private ConcurrentLinkedQueue<JMenuItem> leftSideMenus = new ConcurrentLinkedQueue<>();
+	private ConcurrentLinkedQueue<JMenuItem> rightSideMenus = new ConcurrentLinkedQueue<>();
     private VMDesktop desktop;
+    private HashMap<String, JFrame> frames = new HashMap<>(); 
 
     private VirtualMachine() {
         super("Groovy VM");
         setupUI();
+    }
+
+    @Override
+    public void dispose() {
+      vmInstance = null;
+      super.dispose();
+    }
+
+
+    public void putFrame(String name, JFrame frame) {
+    	frames.put(name, frame);
+    }
+
+    public JFrame getFrame(String name) {
+    	return frames.remove(name);
     }
 
     public static VirtualMachine getInstance() {
@@ -56,6 +74,7 @@ public class VirtualMachine extends JFrame {
 
     private void setupUI() {
 		setLookAndFeel();
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(800, 600);
 
@@ -142,11 +161,11 @@ public class VirtualMachine extends JFrame {
         return desktop;
     }
 
-	public synchronized void addSysLeftMenu(JMenu menu) {
+	public synchronized void addSysLeftMenu(JMenuItem menu) {
 		addMenu(menu, leftSideMenus);
 	}
 
-	public synchronized void addSysRightMenu(JMenu menu) {
+	public synchronized void addSysRightMenu(JMenuItem menu) {
 		addMenu(menu, rightSideMenus);
 	}
 
@@ -163,7 +182,7 @@ public class VirtualMachine extends JFrame {
 						this, java.awt.event.ComponentEvent.COMPONENT_RESIZED));
 	}
 
-    private void addMenu(JMenu menu, ConcurrentLinkedQueue<JMenu> sink) {
+    private void addMenu(JMenuItem menu, ConcurrentLinkedQueue<JMenuItem> sink) {
 		sink.add(menu);
 		menuBar.add(menu);
 	}
@@ -172,7 +191,7 @@ public class VirtualMachine extends JFrame {
 		menuBar.removeAll();
 		JMenu systemMenu = Utils.getCategoryMenu("VMSystemMenu");
 		menuBar.add(systemMenu);
-        menus.forEach { menu -> menuBar.add(menu); }
+		menus.forEach { menu -> menuBar.add(menu); }
 		menuBar.add(Box.createHorizontalGlue());
 		rightSideMenus.forEach { menu -> menuBar.add(menu) };
 		menuBar.revalidate();
