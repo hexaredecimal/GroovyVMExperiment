@@ -3,6 +3,7 @@ import vm.ui.VirtualMachine;
 import vm.ui.VMWindow;
 import vm.ui.VMDesktop
 import vm.ui.Utils; 
+import vm.ScriptLoader;
 
 import javax.swing.JButton;
 import javax.swing.JMenu;
@@ -10,16 +11,21 @@ import javax.swing.JMenuItem;
 import javax.swing.JMenuBar;
 import javax.swing.ImageIcon;
 
+import java.lang.management.ManagementFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.Timer;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import java.awt.Image;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-public class VMAppMenu {
+public class VMAppMenus {
     public static void init() {
         VirtualMachine vm = VirtualMachine.getInstance();
 
@@ -32,7 +38,6 @@ public class VMAppMenu {
         sysMenu.setIcon(sysIcon);
         Utils.putCategoryMenu("VMSystemMenu", sysMenu);
         vm.addSysLeftMenu(sysMenu);
-
 
         JMenu projectsMenu = new JMenu("Projects");
         vm.addSysLeftMenu(projectsMenu);
@@ -50,14 +55,16 @@ public class VMAppMenu {
         vm.addSysLeftMenu(windowMenu);
 
 
-
-
-
         JMenu saveVMMenu = new JMenu("Save VM");
         vm.addSysRightMenu(saveVMMenu);
 
         JMenu reloadVMMenu = new JMenu("Reload");
         vm.addSysRightMenu(reloadVMMenu);
+
+	Utils.addClickEvent(reloadVMMenu, {e -> 
+	   vm.dispose();
+	   ScriptLoader.loadScripts("../vm/init");
+	});
 
 
         JMenu clockMenu = new JMenu("Clock");
@@ -90,5 +97,5 @@ public class VMAppMenu {
     }
 }
 
-VMAppMenu.init();
+VMAppMenus.init();
 
