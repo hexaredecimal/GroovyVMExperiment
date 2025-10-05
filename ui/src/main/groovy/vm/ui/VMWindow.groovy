@@ -21,6 +21,7 @@ import javax.swing.JSeparator;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 import vm.ui.Utils;
+import javax.swing.ImageIcon;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.JComponent
 
@@ -30,6 +31,10 @@ public class VMWindow extends JInternalFrame {
     public VMWindow(String title) {
         super(title, true, true, true, true);
         setSize(100, 100);
+
+	ImageIcon frameIcon = new ImageIcon("../vm/share/assets/icons/physics-16.png");
+	setFrameIcon(frameIcon);
+
         menus = new ArrayList<JMenu>();
         VirtualMachine vm = VirtualMachine.getInstance();
 
