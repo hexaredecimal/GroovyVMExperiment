@@ -187,18 +187,23 @@ public class VisualGit {
 		repo.add(mClone);
 		repo.add(mOpen);
 
+
+
+
 		JMenu actions = new JMenu("Actions");
 		JMenuItem mRefresh = new JMenuItem("Refresh");
 		JMenuItem mCommit = new JMenuItem("Commit");
 		JMenuItem mPush = new JMenuItem("Push");
 		JMenuItem mPull = new JMenuItem("Pull");
-		JMenuItem mLog = new JMenuItem("Log");
+		JMenuItem mLog = new JMenuItem("Git Log");
+		JMenuItem mClearLog = new JMenuItem("Clear Log Messages");
 
 		mRefresh.addActionListener(e -> refreshStatus());
 		mCommit.addActionListener(e -> commit());
 		mPush.addActionListener(e -> push());
 		mPull.addActionListener(e -> pull());
 		mLog.addActionListener(e -> showLog());
+		mClearLog.addActionListener(e -> logArea.setText(""));
 
 		actions.add(mRefresh);
 		actions.addSeparator();
@@ -207,6 +212,8 @@ public class VisualGit {
 		actions.add(mPull);
 		actions.addSeparator();
 		actions.add(mLog);
+		actions.addSeparator();
+		actions.add(mClearLog);
 
 		JMenu branchMenu = new JMenu("Branches");
 		JMenuItem listBranches = new JMenuItem("List Branches");
@@ -224,6 +231,8 @@ public class VisualGit {
 		branchMenu.add(switchBranch);
 		branchMenu.add(createBranch);
 		branchMenu.add(deleteBranch);
+
+		JMenuItem window = new JMenuItem("Clear log");
 
 		JMenu help = new JMenu("Help");
 		JMenuItem about = new JMenuItem("About");
