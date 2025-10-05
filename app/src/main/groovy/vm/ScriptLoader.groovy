@@ -1,5 +1,7 @@
 package vm;
 
+import org.codehaus.groovy.control.CompilerConfiguration;
+import groovy.lang.GroovyClassLoader
 import groovy.lang.GroovyShell;
 
 import java.io.IOException;
@@ -7,9 +9,18 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.swing.SwingUtilities;
 import java.util.Arrays;
+import java.io.File;
+
 
 public class ScriptLoader {
-    private static GroovyShell shell = new GroovyShell();
+    private static final CompilerConfiguration config = new CompilerConfiguration();
+    private static final GroovyClassLoader classLoader = new GroovyClassLoader(ScriptLoader.class.getClassLoader(), config);
+    private static final GroovyShell shell = new GroovyShell(classLoader, config);
+
+    static {
+        String classpath = System.getProperty("java.class.path");
+        config.setClasspath(classpath);
+    }
 
     public static void execute(String code) {
 
@@ -20,6 +31,7 @@ public class ScriptLoader {
     }
 
     public static void executeScript(String path) {
+    	classLoader.parseClass(new File(path));
         String code = readFile(path);
         if (code == null) {
             return;
@@ -42,9 +54,8 @@ public class ScriptLoader {
 
         Arrays.sort(groovyFiles, (f1, f2) -> f1.getName().compareToIgnoreCase(f2.getName()));
         for (File file : groovyFiles) {
-            String scriptPath = file.getAbsolutePath();
-            System.out.println("RUNNING: " + scriptPath);
-            executeScript(scriptPath);
+            System.out.println("[Info]: Loading " + file.getParentFile().getName() + "/" + file.getName());
+            executeScript(file.getAbsolutePath());
         }
     }
 
