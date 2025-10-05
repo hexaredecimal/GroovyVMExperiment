@@ -1,4 +1,5 @@
 
+import vm.Main;
 import vm.ui.VirtualMachine;
 import vm.ui.VMWindow;
 import vm.ui.VMDesktop
@@ -24,6 +25,10 @@ import java.util.List;
 import java.awt.Image;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class VMAppMenus {
     public static void init() {
@@ -63,7 +68,27 @@ public class VMAppMenus {
 
 	Utils.addClickEvent(reloadVMMenu, {e -> 
 	   vm.dispose();
-	   ScriptLoader.loadScripts("../vm/init");
+	   try {
+		   String javaHome = System.getProperty("java.home");
+		    String javaBin = javaHome + "/bin/java";
+		    String classpath = System.getProperty("java.class.path");
+		    String className = Main.class.getName();
+
+		    List<String> command = new ArrayList<>();
+		    command.add(javaBin);
+		    command.add("-cp");
+		    command.add(classpath);
+		    command.add(className);
+
+		    ProcessBuilder builder = new ProcessBuilder(command);
+		    builder.inheritIO(); 
+		    Process process = builder.start();
+		    System.exit(0);
+	    } catch (Exception ex) {
+
+	    }
+
+	   // ScriptLoader.loadScripts("../vm/init");
 	});
 
 
